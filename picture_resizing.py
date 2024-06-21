@@ -19,21 +19,21 @@ def iterate_directory():
             filename = filename[:-5] #remove .jpeg from the filename
             save_resized_image(new_image, filename)
 
-def resize_image(img):
+def resize_image(img: Image.Image) -> Image.Image:
     new_image = img.resize((1240, 1748))
 
     new_image = add_white_borders(new_image)
 
     return new_image
 
-def add_white_borders(old_img):
+def add_white_borders(old_img: Image.Image) -> Image.Image:
     new_img = Image.new("RGB", (1310, 1818), "White")
     box = tuple((n - o) // 2 for n, o in zip((1310, 1818), (1240, 1748)))
     new_img.paste(old_img, box)
 
     return new_img
 
-def save_resized_image(img, filename):
+def save_resized_image(img: Image.Image, filename: str):
     if not os.path.exists("resized_images"):
         os.makedirs("resized_images")
         os.chdir(f'{os.getcwd()}/resized_images')
@@ -59,7 +59,7 @@ def convert_img_to_pdf():
             
             file.close()
 
-def save_pdf_file_names_to_list():
+def save_pdf_file_names_to_list() -> list[str]:
     lst = []
     for filename in os.listdir():
         if filename.lower().endswith(('.pdf')):
