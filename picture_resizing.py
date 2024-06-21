@@ -12,6 +12,11 @@ def main():
 
 
 def iterate_directory():
+    """
+    Iterates through the current directory and processes image files.
+    
+    For each image file, it resizes the image and saves it in the 'resized_images' directory.
+    """
     for filename in os.listdir():
         if filename.lower().endswith(('.jpg', '.jpeg')):
             image = Image.open(filename)
@@ -20,6 +25,20 @@ def iterate_directory():
             save_resized_image(new_image, filename)
 
 def resize_image(img: Image.Image) -> Image.Image:
+    """
+    Resizes the given image to 1240x1748
+    
+    Parameters
+    ----------
+        img : Image.Image
+            The image to be resized
+        
+    Returns
+    ----------
+    Image.Image
+        The resized image (with white borders)
+    """
+
     new_image = img.resize((1240, 1748))
 
     new_image = add_white_borders(new_image)
@@ -27,6 +46,19 @@ def resize_image(img: Image.Image) -> Image.Image:
     return new_image
 
 def add_white_borders(old_img: Image.Image) -> Image.Image:
+    """
+    Adds white borders to the given image to fit it into 1310x1818 dimensions.
+    
+    Parameters
+    ----------
+        old_img : Image.Image
+            The image to which white borders will be added
+        
+    Returns
+    ----------
+    Image.Image
+        The image with white borders
+    """
     new_img = Image.new("RGB", (1310, 1818), "White")
     box = tuple((n - o) // 2 for n, o in zip((1310, 1818), (1240, 1748)))
     new_img.paste(old_img, box)
@@ -34,6 +66,16 @@ def add_white_borders(old_img: Image.Image) -> Image.Image:
     return new_img
 
 def save_resized_image(img: Image.Image, filename: str):
+    """
+    Saves the resized image to the 'resized_images' directory with '_a6' appended to the filename
+    Parameters
+    ----------
+        img : Image.Image
+            The image to be saved
+        filename : str
+            The filename to be used
+        
+    """
     if not os.path.exists("resized_images"):
         os.makedirs("resized_images")
         os.chdir(f'{os.getcwd()}/resized_images')
@@ -45,6 +87,10 @@ def save_resized_image(img: Image.Image, filename: str):
         os.chdir('..')
 
 def convert_img_to_pdf():
+    """
+    Converts all JPEG images in the 'resized_images' directory to PDF files
+    """
+
     os.chdir(f'{os.getcwd()}/resized_images')
     for filename in os.listdir():
         if filename.lower().endswith(('.jpg', '.jpeg')):
@@ -60,6 +106,15 @@ def convert_img_to_pdf():
             file.close()
 
 def save_pdf_file_names_to_list() -> list[str]:
+    """
+     Saves the filenames of all PDF files in the current directory to a list
+    
+        
+    Returns
+    ----------
+    List[str]
+        A list of PDF filenames.
+    """
     lst = []
     for filename in os.listdir():
         if filename.lower().endswith(('.pdf')):
@@ -67,6 +122,11 @@ def save_pdf_file_names_to_list() -> list[str]:
     return lst
 
 def append_pdf():
+    """
+    Merges all PDF files in the current directory into a single PDF file named 'result.pdf'
+    
+    """
+
     merger = PdfMerger()
     pdfs = save_pdf_file_names_to_list()
     for pdf in pdfs:
