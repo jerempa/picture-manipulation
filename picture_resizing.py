@@ -11,7 +11,7 @@ def main():
 
 
 
-def iterate_directory():
+def iterate_directory() -> None:
     """
     Iterates through the current directory and processes image files.
     
@@ -65,7 +65,7 @@ def add_white_borders(old_img: Image.Image) -> Image.Image:
 
     return new_img
 
-def save_resized_image(img: Image.Image, filename: str):
+def save_resized_image(img: Image.Image, filename: str) -> None:
     """
     Saves the resized image to the 'resized_images' directory with '_a6' appended to the filename
     Parameters
@@ -86,7 +86,7 @@ def save_resized_image(img: Image.Image, filename: str):
         img.save(f'{filename}_a6.jpeg')
         os.chdir('..')
 
-def convert_img_to_pdf():
+def convert_img_to_pdf() -> None:
     """
     Converts all JPEG images in the 'resized_images' directory to PDF files
     """
@@ -121,7 +121,7 @@ def save_pdf_file_names_to_list() -> list[str]:
             lst.append(filename)
     return lst
 
-def append_pdf():
+def append_pdf() -> None:
     """
     Merges all PDF files in the current directory into a single PDF file named 'result.pdf'
     
