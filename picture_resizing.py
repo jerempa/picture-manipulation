@@ -2,6 +2,10 @@ from PIL import Image
 import img2pdf
 import os
 from pypdf import PdfMerger
+import logging
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(message)s')
 
 def main():
 
@@ -91,7 +95,11 @@ def convert_img_to_pdf() -> None:
     Converts all JPEG images in the 'resized_images' directory to PDF files
     """
 
-    os.chdir(f'{os.getcwd()}/resized_images')
+    try:
+        os.chdir(f'{os.getcwd()}/resized_images')
+    except FileNotFoundError:
+        os.makedirs("resized_images")
+        os.chdir(f'{os.getcwd()}/resized_images')
     for filename in os.listdir():
         if filename.lower().endswith(('.jpg', '.jpeg')):
             img = Image.open(filename)
@@ -134,7 +142,7 @@ def append_pdf() -> None:
 
     merger.write("result.pdf")
     merger.close()
-    print("PDF saved")
+    logging.info("PDF saved")
 
 main()
 
